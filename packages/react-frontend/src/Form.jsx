@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 
 function Form(props) {
-  const [person, setPerson] = useState({
-    name: "",
-    job: ""
-  });
+  const [person, setPerson] = useState({ name: "", job: "" });
 
   function handleChange(event) {
     const { name, value } = event.target;
     setPerson({ ...person, [name]: value });
   }
 
-  function submitForm() {
+  function submitForm(event) {
+    event.preventDefault();
+    if (!person.name || !person.job) return;
+
     props.handleSubmit(person);
     setPerson({ name: "", job: "" });
   }
 
   return (
-    <form>
+    <form onSubmit={submitForm}>
       <label htmlFor="name">Name</label>
       <input
         type="text"
@@ -36,11 +36,7 @@ function Form(props) {
         onChange={handleChange}
       />
 
-      <input
-        type="button"
-        value="Submit"
-        onClick={submitForm}
-      />
+      <input type="submit" value="Submit" />
     </form>
   );
 }
